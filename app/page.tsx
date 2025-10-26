@@ -295,10 +295,13 @@ export default function HomePage() {
               <Button
                 type="submit"
                 disabled={loading || !inputValue.trim()}
-                className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-lg px-4 py-2 sm:px-6 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex-shrink-0"
+                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 dark:from-blue-600 dark:to-blue-700 dark:hover:from-blue-700 dark:hover:to-blue-800 text-white rounded-lg px-4 py-2 sm:px-6 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex-shrink-0 font-medium shadow-md hover:shadow-lg disabled:shadow-none transform hover:scale-105 disabled:hover:scale-100 active:scale-95"
                 aria-label="Send message"
               >
-                <Send className="w-5 h-5" />
+                <div className="flex items-center gap-2">
+                  <Send className={`w-5 h-5 transition-transform duration-200 ${loading ? 'animate-spin' : ''}`} />
+                  <span className="hidden sm:inline">Send</span>
+                </div>
               </Button>
             </div>
 

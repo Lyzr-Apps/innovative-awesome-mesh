@@ -159,11 +159,31 @@ export default function HomePage() {
         throw new Error(data.error || 'Failed to get response')
       }
 
-      // Extract response content with fallbacks
-      const responseContent =
-        typeof data.response === 'string'
-          ? data.response
-          : data.response?.result || data.response?.message || JSON.stringify(data.response)
+      // Extract response content with fallbacks for nested structure
+      let responseContent = ''
+
+      // Try raw_response first (actual content from agent)
+      if (data.raw_response) {
+        responseContent = data.raw_response
+      }
+      // Fallback to response if it's a string
+      else if (typeof data.response === 'string') {
+        responseContent = data.response
+      }
+      // Try nested fields
+      else if (data.response?.result) {
+        responseContent = data.response.result
+      } else if (data.response?.message) {
+        responseContent = data.response.message
+      }
+      // Last resort
+      else {
+        responseContent = JSON.stringify(data.response)
+      }
+
+      if (!responseContent || responseContent.trim() === '') {
+        throw new Error('No content in response')
+      }
 
       const assistantMessage: Message = {
         id: Date.now().toString(),
